@@ -76,15 +76,16 @@ export default class FunctionDetails {
      * @param source
      */
     public static parseFunctions(source:string) : Array<FunctionDetails> {
+        
         source = source.replace(/\/\/[^\n^\r]+/g, function (mat) {
             return '/'.repeat(mat.length);
         });
         let result:FunctionDetails[] = [];
         let templateRegex = Helpers.templateRegex;
-        let returnTypeRegex = "((([\\w_][\\w\\d<>_\\[\\]\\.:\,]*\\s+)*[\\w_][\\w\\d<>_\\[\\]\\(\\)\\.:\,]*)(\\**\\&{0,2}))?";
+        let returnTypeRegex = "((([\\w_][\\w\\d<>_\\[\\]\\.:\,]*\\s+)*[\\w_][\\w\\d<>_\\[\\]\\(\\)\\.:\,]*)(\\**\\&{0,2}))";
         let funcRegex = "((\\**\\&{0,2})((operator\\s*([^\\(]|\\(\\))+)|(~?[\\w_][\\w\\d_]*)))";
         let funcParamsRegex = "\\((([^\\)]*)|(.+\\([^\\)]*\\).+))\\)";
-        let afterParamsRegex = "([^;^)]*)\\;";
+        let afterParamsRegex = "((.*\\n)(\\{[\\s\\S]*?)(\\})|(\\{[\\s\\S]*?)(\\}))";
 
         let funcRegexStr = templateRegex + returnTypeRegex + '\\s+' + funcRegex + '\\s*' + funcParamsRegex + '\\s*' + afterParamsRegex;
         let regex = new RegExp(funcRegexStr, 'gm');

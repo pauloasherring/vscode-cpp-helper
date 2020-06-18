@@ -116,6 +116,18 @@
 						],
 						"description": "Source file pattern for headers."
 					},
+					"CppHelper.HeaderPattern": {
+						"type": "array",
+						"default": [
+							"{FILE}.h",
+							"{FILE}.hpp",
+							"/inc/{FILE}.h",
+							"/inc/{FILE}.hpp",
+							"/include/{FILE}.h",
+							"/include/{FILE}.hpp"
+						],
+						"description": "Header file pattern."
+					},
 					"CppHelper.HeaderGuardPattern": {
 						"type": "string",
 						"default": "__{FILE}_H__",
@@ -141,12 +153,12 @@
 						"default": true,
 						"description": "Show \"Create Header Guard\" in context menu"
 					},
-					"CppHelper.ContextCreatePrototype":{
+					"CppHelper.ContextCreatePrototype": {
 						"type": "boolean",
-						"default": false,
+						"default": true,
 						"description": "Show \"Create Prototype\" in context menu"
 					},
-					"CppHelper.ContextCreatePrototypeHere":{	
+					"CppHelper.ContextCreatePrototypeHere": {
 						"type": "boolean",
 						"default": true,
 						"description": "Show \"Create Prototype Here\" in context menu"

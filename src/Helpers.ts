@@ -66,6 +66,59 @@ export default class Helpers {
     }
 
     /**
+     * Opens header file of a active header file editor.
+     */
+    public static openHeaderFile(): Promise<vscode.TextEditor> {
+        let patterns: any = vscode.workspace.getConfiguration("CppHelper").get<Array<string>>('HeaderPattern');
+        let notFoundBehavior: any = vscode.workspace.getConfiguration("CppHelper").get<string>('SourceNotFoundBehavior');
+        return new Promise(function (resolve, reject) {
+            let fileName = vscode.window.activeTextEditor?.document.fileName;
+            if (fileName) {
+                let name = fileName.replace(/^.*[\\\/]/, '').replace(/\.[^\.]+$/, '');
+                const directory = fileName.replace(/[\\\/][^\\\/]+$/, '');
+                let extension = fileName.split('.').pop();
+                for (let i in patterns) {
+                    if (typeof patterns[i] === 'string') {
+                        let fileToOpen: string = "";
+                        if (patterns[i][0] === '/') {
+                            fileToOpen = vscode.workspace.rootPath + patterns[i].replace('{FILE}', name);
+                        } else {
+                            fileToOpen = path.join(directory, patterns[i].replace('{FILE}', name));
+                        }
+                        if (fs.existsSync(fileToOpen)) {
+                            vscode.workspace.openTextDocument(fileToOpen)
+                                .then((doc: vscode.TextDocument) => {
+                                    vscode.window.showTextDocument(doc, 1, true)
+                                        .then(function (textEditor: vscode.TextEditor) {
+                                            resolve(textEditor);
+                                        });
+                                });
+                            return;
+                        } else if (notFoundBehavior === 'Create source file') {
+                            let workspaceEdit = new vscode.WorkspaceEdit;
+                            workspaceEdit.createFile(vscode.Uri.file(directory + '/' + name + '.h'), {overwrite: false, ignoreIfExists: true});
+                            return vscode.workspace.applyEdit(workspaceEdit)
+                                .then(function (result: boolean) {
+                                    if (result) {
+                                        return vscode.workspace.openTextDocument(directory + '/' + name + '.h')
+                                            .then((doc: vscode.TextDocument) => {
+                                                vscode.window.showTextDocument(doc, 1, true)
+                                                    .then(function (textEditor: vscode.TextEditor) {
+                                                        resolve(textEditor);
+                                                    });
+                                            });
+                                    }
+                                    resolve(vscode.window.activeTextEditor);
+                                });
+                        }
+                    }
+                }
+                resolve(vscode.window.activeTextEditor);
+            }
+        });
+    }
+    
+    /**
      * Opens source file of a active header file editor.
      */
     public static openSourceFile(): Promise<vscode.TextEditor> {
