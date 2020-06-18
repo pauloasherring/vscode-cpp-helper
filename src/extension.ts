@@ -10,6 +10,8 @@ export function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(vscode.commands.registerCommand('cpp-helper.create-implementation-here', require('./commands/CreateImplementationHere').default));
 	context.subscriptions.push(vscode.commands.registerCommand('cpp-helper.copy-implementation', require('./commands/CopyImplementation').default));
 	context.subscriptions.push(vscode.commands.registerCommand('cpp-helper.create-header-guard', require('./commands/CreateHeaderGuard').default));
+	context.subscriptions.push(vscode.commands.registerCommand('cpp-helper.create-prototype', require('./commands/CreatePrototype').default));
+	context.subscriptions.push(vscode.commands.registerCommand('cpp-helper.create-prototype-here', require('./commands/CreatePrototypeHere').default));
 }
 
 // this method is called when your extension is deactivated

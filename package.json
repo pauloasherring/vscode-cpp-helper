@@ -16,6 +16,8 @@
 		"onCommand:cpp-helper.create-implementation-here",
 		"onCommand:cpp-helper.copy-implementation",
 		"onCommand:cpp-helper.create-header-guard",
+		"onCommand:cpp-helper.create-prototype",
+		"onCommand:cpp-helper.create-prototype-here",
 		"onLanguage:cpp",
 		"onLanguage:c"
 	],
@@ -41,6 +43,14 @@
 			{
 				"command": "cpp-helper.create-header-guard",
 				"title": "Create Header Guard"
+			},
+			{
+				"command": "cpp-helper.create-prototype",
+				"title": "Create Function's prototype"
+			},
+			{
+				"command": "cpp-helper.create-prototype-here",
+				"title": "Create Function's prototype here"
 			}
 		],
 		"menus": {
@@ -64,6 +74,16 @@
 					"when": "resourceLangId =~ /^c|cpp$/ && config.CppHelper.ContextCreateHeaderGuard",
 					"command": "cpp-helper.create-header-guard",
 					"group": "C++ Helper@4"
+				},
+				{
+					"when": "resourceLangId =~ /^c|cpp$/ && config.CppHelper.ContextCreatePrototype",
+					"command": "cpp-helper.create-prototype",
+					"group": "C++ Helper@5"
+				},
+				{
+					"when": "resourceLangId =~ /^c|cpp$/ && config.CppHelper.ContextCreatePrototypeHere",
+					"command": "cpp-helper.create-prototype-here",
+					"group": "C++ Helper@5"
 				}
 			]
 		},
@@ -120,6 +140,16 @@
 						"type": "boolean",
 						"default": true,
 						"description": "Show \"Create Header Guard\" in context menu"
+					},
+					"CppHelper.ContextCreatePrototype":{
+						"type": "boolean",
+						"default": false,
+						"description": "Show \"Create Prototype\" in context menu"
+					},
+					"CppHelper.ContextCreatePrototypeHere":{	
+						"type": "boolean",
+						"default": true,
+						"description": "Show \"Create Prototype Here\" in context menu"
 					},
 					"CppHelper.SourceNotFoundBehavior": {
 						"type": "string",
